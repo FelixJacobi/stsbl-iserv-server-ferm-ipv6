@@ -1,0 +1,5 @@
+#!/bin/bash
+payload="$(ferm --domain ip6 --lines --noexec /etc/ferm/ferm.conf | grep -v 'run-parts')"
+
+echo "${payload}" | ip6tables-restore
+

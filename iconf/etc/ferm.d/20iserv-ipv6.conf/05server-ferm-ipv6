@@ -1,0 +1,26 @@
+domain (ip6) {
+  table filter {
+    chain INPUT {
+      policy DROP;
+
+      jump input_first;
+
+      mod state state (ESTABLISHED RELATED) ACCEPT;
+
+      interface lo ACCEPT;
+
+      proto icmpv6 ACCEPT;
+
+      jump input_world;
+    }
+    chain input_first {
+
+    }
+    chain FORWARD {
+      policy DROP;
+    }
+    chain input_world {
+      proto tcp dport (ssh) ACCEPT;
+    }
+  }
+}

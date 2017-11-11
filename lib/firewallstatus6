@@ -1,0 +1,148 @@
+#!/usr/bin/perl -CSDAL
+use warnings;
+use strict;
+use Net::IP;
+use Regexp::IPv6;
+
+my $tmpFileIPS = "/tmp/iserv_firewall_IPS";
+my $tmpFileFS = "/tmp/iserv_firewall_FS";
+
+my @IPS = qx(ip6tables-save | sed -r -f /usr/share/iserv/security/firewall/ip6tables-save.sed);
+my @FS = qx(ferm --domain ip6 --shell --remote /etc/ferm/ferm.conf | sed -r -f /usr/share/iserv/security/firewall/ip6tables-save.sed);
+
+# normalize ipv6 address
+my @NEW_IPS;
+my @NEW_FS;
+
+for my $line (@IPS)
+{
+  $line =~ s/::1/0000:0000:0000:0000:0000:0000:0000:0001/g;
+  my ($length) = $line =~ /(\/(\d+))/;
+
+  if (my ($ip) = $line =~ /($Regexp::IPv6::IPv6_re)/)
+  {
+    my $expand = Net::IP::ip_expand_address $ip, 6;
+    $expand .= "/128" if not defined $length;
+    $line =~ s/$Regexp::IPv6::IPv6_re(?:\/(\d+))/$expand/g;
+  }
+  push @NEW_IPS, $line;
+}
+
+@IPS = @NEW_IPS;
+
+for my $line (@FS)
+{
+  $line =~ s/::1/0000:0000:0000:0000:0000:0000:0000:0001/g;
+  my ($length) = $line =~ /(\/(\d+))/;
+
+  if (my ($ip) = $line =~ /($Regexp::IPv6::IPv6_re)/)
+  {
+    my $expand = Net::IP::ip_expand_address $ip, 6;
+    $expand .= "/128" if not defined $length;
+    $line =~ s/$Regexp::IPv6::IPv6_re(?:\/(\d+))/$expand/g;
+  }
+  push @NEW_FS, $line;
+}
+
+@FS = @NEW_FS;
+  
+sub normalize {
+  my (@nat, @nathead, @mangle, @manglehead, @filter, @filterhead);
+
+  my $target="";
+  foreach my $line (@_) {
+    chomp $line;
+    if ($line eq "") {
+      next;
+    } elsif ($line eq "*filter") {
+      $target="*filter";
+      next;
+    } elsif ($line eq "*mangle") {
+      $target="*mangle";
+      next;
+    } elsif ($line eq "*nat") {
+      $target="*nat";
+      next;
+    } elsif ($line eq "COMMIT") {
+      $target="";
+      next;
+    }
+    if ($target eq "*filter") {
+      if ((substr($line, 0, 1) eq "*") || (substr($line, 0, 1) eq ":")) {
+        push @filterhead, $line;
+        next;
+      } else {
+        push @filter, join(" -", sort split(/ -/, $line));
+        next;
+      }
+    } elsif ($target eq "*mangle") {
+      if ((substr($line, 0, 1) eq "*") || (substr($line, 0, 1) eq ":")) {
+        push @manglehead, $line;
+        next;
+      } else {
+        push @mangle, join(" -", sort split(/ -/, $line));
+        next;
+      }
+    } elsif ($target eq "*nat") {
+      if ((substr($line, 0, 1) eq "*") || (substr($line, 0, 1) eq ":")) { 
+        push @nathead, $line;
+        next;
+      } else {
+        push @nat, join(" -", sort split(/ -/, $line));
+        next;
+      }
+    }
+  }
+
+  my $output = "*filter\n";
+  $output .= join("\n", sort @filterhead); 
+  $output .= join("\n", sort @filter);
+  $output .= "\nCOMMIT\n";
+
+  $output .= "*nat\n";
+  $output .= join("\n", sort @nathead);
+  $output .= join("\n", sort @nat);
+  $output .= "\nCOMMIT\n";
+
+  $output .= "*mangle\n";
+  $output .= join("\n", sort @manglehead);
+  $output .= join("\n", sort @mangle);
+  $output .= "\nCOMMIT\n";
+
+  return $output;
+}
+
+
+open my $fh, ">", $tmpFileIPS or die("Could not open file. $!");
+print $fh normalize(@IPS);
+close $fh;
+
+open $fh, ">", $tmpFileFS or die("Could not open file. $!");
+print $fh normalize(@FS);
+close $fh;
+
+my @diff = qx(diff -u --ignore-space-change --ignore-blank-lines --ignore-case "$tmpFileIPS" "$tmpFileFS");
+
+unlink $tmpFileIPS;
+unlink $tmpFileFS;
+
+my $numberOfDifferences = 0;
+my @lines;
+foreach my $line (@diff) {
+  if ($line =~ /^(\+\+\+|\-\-\-)/) {
+    next;
+  }
+  if ($line =~ /^(\+|\-)/) {
+    chomp $line;
+    push @lines, $line;
+    $numberOfDifferences++;
+  }
+}
+
+if($numberOfDifferences >0) {
+  print STDERR "Firewall changes detected ($numberOfDifferences)!\n";
+  print STDERR join("\n", @lines, "");
+  exit 1;
+}
+
+exit 0;

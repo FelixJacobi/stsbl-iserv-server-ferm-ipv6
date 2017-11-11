@@ -1,0 +1,22 @@
+Source: stsbl-iserv-server-ferm-ipv6
+Section: misc
+Priority: extra
+Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+
+Package: stsbl-iserv-server-ferm-ipv6
+Architecture: all
+Depends:
+  ${misc:Depends},
+  ${perl:Depends},
+  iserv-server-ferm,
+  iserv-update,
+  ferm,
+  ipset,
+Description: IServ Ferm (IPv6-Support)
+ Ergänzt die Ferm-Firewall von IServ um Unterstützung für IPv6.
+ .
+ Enzhält eine restriktive Basis-Konfiguration, die ausschließilich den
+ Zugriff per SSH auf den Server erlaubt.
+Tag: suite::iserv
