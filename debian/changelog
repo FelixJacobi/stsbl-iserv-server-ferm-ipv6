@@ -1,3 +1,9 @@
+stsbl-iserv-server-ferm-ipv6 (17.11.12-1) experimental; urgency=medium
+
+  * frewallstatus6: Improved normalization
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 12 Nov 2017 00:02:47 +0100
+
 stsbl-iserv-server-ferm-ipv6 (17.11.11-4) experimental; urgency=medium
 
   * Added missing header
