@@ -17,14 +17,20 @@ my @NEW_FS;
 for my $line (@IPS)
 {
   $line =~ s/::1/0000:0000:0000:0000:0000:0000:0000:0001/g;
-  my ($length) = $line =~ /(\/(\d+))/;
-
-  if (my ($ip) = $line =~ /($Regexp::IPv6::IPv6_re)/)
+  
+  if (my @ips = $line =~ /($Regexp::IPv6::IPv6_re(|\/(\d+)))/)
   {
-    my $expand = Net::IP::ip_expand_address $ip, 6;
-    $expand .= "/128" if not defined $length;
-    $line =~ s/$Regexp::IPv6::IPv6_re(?:\/(\d+))/$expand/g;
+    for my $ip (@ips)
+    {
+      next if not length $ip;
+ 
+      my ($length) = $ip =~ /(\/(\d+))/;
+      my $out_ip = $ip; 
+      my $expand = Net::IP::ip_expand_address $out_ip, 6;
+      $line =~ s/$ip/$expand/g;
+    }
   }
+  $line =~ s/\/128//g;
   push @NEW_IPS, $line;
 }
 
@@ -33,14 +39,20 @@ for my $line (@IPS)
 for my $line (@FS)
 {
   $line =~ s/::1/0000:0000:0000:0000:0000:0000:0000:0001/g;
-  my ($length) = $line =~ /(\/(\d+))/;
 
-  if (my ($ip) = $line =~ /($Regexp::IPv6::IPv6_re)/)
-  {
-    my $expand = Net::IP::ip_expand_address $ip, 6;
-    $expand .= "/128" if not defined $length;
-    $line =~ s/$Regexp::IPv6::IPv6_re(?:\/(\d+))/$expand/g;
+  if (my @ips = $line =~ /($Regexp::IPv6::IPv6_re(|\/(\d+)))/)
+  { 
+    for my $ip (@ips)
+    {
+      next if not length $ip;
+
+      my ($length) = $ip =~ /(\/(\d+))/;
+      my $out_ip = $ip;
+      my $expand = Net::IP::ip_expand_address $out_ip, 6;
+      $line =~ s/$ip/$expand/g;
+    }
   }
+  $line =~ s/\/128//g;
   push @NEW_FS, $line;
 }
 
