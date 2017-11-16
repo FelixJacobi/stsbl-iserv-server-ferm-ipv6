@@ -1,4 +1,0 @@
-Test "firewall (ipv6)"
-  /usr/lib/iserv/firewallstatus6
-  ---
-  systemctl restart ferm

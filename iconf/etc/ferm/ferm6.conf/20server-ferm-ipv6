@@ -1,0 +1,7 @@
+# Includes
+@include '/etc/ferm6.d/';
+
+# Hooks
+@hook pre "run-parts /usr/share/iserv/security/firewall/hooks/pre.d";
+@hook post "run-parts /usr/share/iserv/security/firewall/hooks/post.d";
+@hook flush "run-parts /usr/share/iserv/security/firewall/hooks/post.d";

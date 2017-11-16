@@ -1,0 +1,15 @@
+MkDir 0755 root:root /etc/ferm6.d
+Check /etc/ferm6.d/20iserv-ipv6.conf
+Check /etc/ferm/ferm6.conf
+
+Test "ferm6 service"
+  systemctl -q is-enabled ferm6
+  ---
+  systemctl daemon-reload
+  systemctl enable ferm6
+
+Test "firewall (ipv6)"
+  /usr/lib/iserv/firewallstatus6
+  ---
+  systemctl restart ferm6
+
