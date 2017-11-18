@@ -7,3 +7,5 @@ then
   invoke-rc.d ferm6 disable || true
   [ -f "/etc/ferm.d/20iserv-ipv6.conf" ] && rm -f /etc/ferm.d/20iserv-ipv6.conf
 fi
+
+#DEBHELPER#

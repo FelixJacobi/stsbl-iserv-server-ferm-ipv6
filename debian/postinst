@@ -7,3 +7,4 @@ then
   update-rc.d ferm6 start || true
 fi
 
+#DEBHELPER#
