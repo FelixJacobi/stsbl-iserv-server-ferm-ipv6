@@ -1,3 +1,10 @@
+stsbl-iserv-server-ferm-ipv6 (17.11.18-4) experimental; urgency=medium
+
+  * Removed docs file
+  * Fixed ferm config path
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sat, 18 Nov 2017 02:44:32 +0100
+
 stsbl-iserv-server-ferm-ipv6 (17.11.18-3) experimental; urgency=medium
 
   * Added systemd unit and fixed path of config
