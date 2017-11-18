@@ -8,7 +8,7 @@ my $tmpFileIPS = "/tmp/iserv_firewall_IPS";
 my $tmpFileFS = "/tmp/iserv_firewall_FS";
 
 my @IPS = qx(ip6tables-save | sed -r -f /usr/share/iserv/security/firewall/ip6tables-save.sed);
-my @FS = qx(ferm --domain ip6 --shell --remote /etc/ferm/ferm.conf | sed -r -f /usr/share/iserv/security/firewall/ip6tables-save.sed);
+my @FS = qx(ferm --domain ip6 --shell --remote /etc/ferm/ferm6.conf | sed -r -f /usr/share/iserv/security/firewall/ip6tables-save.sed);
 
 # normalize ipv6 address
 my @NEW_IPS;

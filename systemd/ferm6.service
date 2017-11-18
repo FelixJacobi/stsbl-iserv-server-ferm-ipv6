@@ -1,0 +1,14 @@
+[Unit]
+Description=ferm firewall ipv6 configuration
+RequiresMountsFor=/var/cache/
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/init.d/ferm6 start
+ExecReload=/etc/init.d/ferm6 reload
+ExecStop=/etc/init.d/ferm6 stop
+
+[Install]
+WantedBy=network.target
