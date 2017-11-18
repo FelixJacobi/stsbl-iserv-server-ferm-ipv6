@@ -21,7 +21,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 FERM=/usr/sbin/ferm
-CONFIG=/etc/ferm/fermi6.conf
+CONFIG=/etc/ferm/ferm6.conf
 NAME=ferm
 DESC="Firewall (IPv6)"
 CACHE_DIR=/var/cache/ferm
@@ -36,6 +36,7 @@ CACHE=no
 OPTIONS=
 unset DOMAINS
 [ -r /etc/default/ferm ] && . /etc/default/ferm
+OPTIONS+=" --domain ip6"
 
 test -f "$CONFIG" || exit 0
 

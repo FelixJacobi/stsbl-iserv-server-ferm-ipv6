@@ -57,7 +57,7 @@ for my $line (@FS)
 }
 
 @FS = @NEW_FS;
-  
+
 sub normalize {
   my (@nat, @nathead, @mangle, @manglehead, @filter, @filterhead);
 
@@ -108,16 +108,19 @@ sub normalize {
 
   my $output = "*filter\n";
   $output .= join("\n", sort @filterhead); 
+  $output .= "\n";
   $output .= join("\n", sort @filter);
   $output .= "\nCOMMIT\n";
 
   $output .= "*nat\n";
   $output .= join("\n", sort @nathead);
+  $output .= "\n";
   $output .= join("\n", sort @nat);
   $output .= "\nCOMMIT\n";
 
   $output .= "*mangle\n";
   $output .= join("\n", sort @manglehead);
+  $output .= "\n";
   $output .= join("\n", sort @mangle);
   $output .= "\nCOMMIT\n";
 
