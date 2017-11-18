@@ -21,7 +21,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 FERM=/usr/sbin/ferm
-CONFIG=/etc/ferm6/ferm.conf
+CONFIG=/etc/ferm/fermi6.conf
 NAME=ferm
 DESC="Firewall (IPv6)"
 CACHE_DIR=/var/cache/ferm
