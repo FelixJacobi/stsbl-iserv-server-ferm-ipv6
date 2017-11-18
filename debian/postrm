@@ -3,5 +3,7 @@ set -e
 
 if [ "$1" = "remove" ] ||  [ "$1" = "purge" ]
 then
+  update-rc.d ferm6 start || true
+  invoke-rc.d ferm6 disable || true
   [ -f "/etc/ferm.d/20iserv-ipv6.conf" ] && rm -f /etc/ferm.d/20iserv-ipv6.conf
 fi
