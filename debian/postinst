@@ -3,8 +3,8 @@ set -e
 
 if [ "$1" = "configure" ]
 then
-  invoke-rc.d ferm6 enable || true
-  update-rc.d ferm6 start || true
+  update-rc.d ferm6 enable || true
+  invoke-rc.d ferm6 start || true
 fi
 
 #DEBHELPER#
