@@ -25,7 +25,13 @@ for my $line (@IPS)
       next if not length $ip;
  
       my ($length) = $ip =~ /(\/(\d+))/;
-      my $out_ip = $ip; 
+      my $out_ip = $ip;
+
+      if (not defined $length)
+      {
+        $out_ip .= "/128";
+      }
+
       my $expand = Net::IP::ip_expand_address $out_ip, 6;
       $line =~ s/$ip/$expand/g;
     }
@@ -48,6 +54,12 @@ for my $line (@FS)
 
       my ($length) = $ip =~ /(\/(\d+))/;
       my $out_ip = $ip;
+
+      if (not defined $length)
+      {
+        $out_ip .= "/128";
+      }
+
       my $expand = Net::IP::ip_expand_address $out_ip, 6;
       $line =~ s/$ip/$expand/g;
     }
