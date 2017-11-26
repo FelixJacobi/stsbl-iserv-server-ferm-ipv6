@@ -33,6 +33,11 @@ for my $line (@IPS)
       }
 
       my $expand = Net::IP::ip_expand_address $out_ip, 6;
+      # workarounds for stupid expand behaviour
+      $expand =~ s/:\//:0000\//g;
+      $expand =~ s/:(\d)\//:000$1\//g;
+      $expand =~ s/:(\d)(\d)\//:00$1$2\//g;
+      $expand =~ s/:(\d)(\d)(\d)\//:0$1$2$3\//g;
       $line =~ s/$ip/$expand/g;
     }
   }
@@ -61,6 +66,11 @@ for my $line (@FS)
       }
 
       my $expand = Net::IP::ip_expand_address $out_ip, 6;
+      # workarounds for stupid expand behaviour
+      $expand =~ s/:\//:0000\//g;
+      $expand =~ s/:(\d)\//:000$1\//g;
+      $expand =~ s/:(\d)(\d)\//:00$1$2\//g;
+      $expand =~ s/:(\d)(\d)(\d)\//:0$1$2$3\//g;
       $line =~ s/$ip/$expand/g;
     }
   }
