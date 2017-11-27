@@ -1,0 +1,2 @@
+systemctl reload ferm6 || true
+

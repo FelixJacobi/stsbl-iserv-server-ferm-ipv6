@@ -12,7 +12,7 @@ Depends:
   ${perl:Depends},
   ferm,
   ipset,
-  iserv-server-ferm,
+  iserv-server-ferm (>= 17.11.27-0),
   iserv-update,
   lsb-base,
 Description: IServ Ferm (IPv6-Support)
