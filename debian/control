@@ -10,10 +10,10 @@ Architecture: all
 Depends:
   ${misc:Depends},
   ${perl:Depends},
-  iserv-server-ferm,
-  iserv-update,
   ferm,
   ipset,
+  iserv-server-ferm,
+  iserv-update,
   lsb-base,
 Description: IServ Ferm (IPv6-Support)
  Ergänzt die Ferm-Firewall von IServ um Unterstützung für IPv6.
