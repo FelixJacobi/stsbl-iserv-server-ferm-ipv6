@@ -11,35 +11,38 @@ my @IPS = qx(ip6tables-save | sed -r -f /usr/share/iserv/security/firewall/ip6ta
 my @FS = qx(ferm --domain ip6 --shell --remote /etc/ferm/ferm6.conf | sed -r -f /usr/share/iserv/security/firewall/ip6tables-save.sed);
 
 # normalize ipv6 address
-sub normalize_ipv6($) {
-  my ($IN) = @_;
+sub normalize_ipv6(@) {
+  my @IN = @_;
   my @OUT;
 
-  for my $line (@$IN)
+  for my $line (@IN)
   {
-    $line =~ s/\s::1\s/ 0000:0000:0000:0000:0000:0000:0000:0001 /g;
+    $line =~ s/ ::1/ 0000:0000:0000:0000:0000:0000:0000:0001/g;
 
-    if (my @ips = $line =~ /($Regexp::IPv6::IPv6_re(|\/(\d+)))/)
+    if (my @ips = $line =~ /($Regexp::IPv6::IPv6_re\/\d+|$Regexp::IPv6::IPv6_re)/g)
     {
       for my $ip (@ips)
       {
-	next if not length $ip;
+        next if not length $ip;
    
-	my ($length) = $ip =~ /(\/(\d+))/;
-	my $out_ip = $ip;
+        my ($length) = $ip =~ /(\/\d+)/;
+        my $out_ip = $ip;
 
-	if (not defined $length)
-	{
-	  $out_ip .= "/128";
-	}
+        if (not defined $length)
+        {
+          $out_ip .= "/128";
+        }
 
-	my $expand = Net::IP::ip_expand_address $out_ip, 6;
-	# workarounds for stupid expand behaviour
-	$expand =~ s/:\//:0000\//g;
-	$expand =~ s/:(\d|[a-f])\//:000$1\//g;
-	$expand =~ s/:(\d|[a-f])(\d|[a-f])\//:00$1$2\//g;
-	$expand =~ s/:(\d|[a-f])(\d|[a-f])(\d|[a-f])\//:0$1$2$3\//g;
-	$line =~ s/$ip/$expand/g;
+        my $expand = Net::IP::ip_expand_address $out_ip, 6;
+
+        # workarounds for stupid expand behaviour
+        $expand =~ s/:\//:0000\//g;
+        $expand =~ s/:(\d|[a-f])\//:000$1\//g;
+        $expand =~ s/:(\d|[a-f])(\d|[a-f])\//:00$1$2\//g;
+        $expand =~ s/:(\d|[a-f])(\d|[a-f])(\d|[a-f])\//:0$1$2$3\//g;
+
+        # replace ip
+        $line =~ s/$ip/$expand/g;
       }
     }
     $line =~ s/\/128//g;
@@ -49,8 +52,8 @@ sub normalize_ipv6($) {
   return @OUT;
 }
 
-@IPS = normalize_ipv6 \@IPS;
-@FS = normalize_ipv6 \@FS;
+@IPS = normalize_ipv6 @IPS;
+@FS = normalize_ipv6 @FS;
 
 sub normalize {
   my (@nat, @nathead, @mangle, @manglehead, @filter, @filterhead);
