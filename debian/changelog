@@ -1,3 +1,11 @@
+stsbl-iserv-server-ferm-ipv6 (17.12.05-1) experimental; urgency=medium
+
+  * Fixed iconf template name
+  * Added license
+  * firewallstatus6: Improved
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Tue, 05 Dec 2017 01:16:43 +0100
+
 stsbl-iserv-server-ferm-ipv6 (17.11.27-2) experimental; urgency=medium
 
   * Restart firewall on network change
