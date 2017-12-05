@@ -18,6 +18,6 @@ Depends:
 Description: IServ Ferm (IPv6-Support)
  Ergänzt die Ferm-Firewall von IServ um Unterstützung für IPv6.
  .
- Enzhält eine restriktive Basis-Konfiguration, die ausschließilich den
+ Enthält eine restriktive Basis-Konfiguration, die ausschließlich den
  Zugriff per SSH auf den Server erlaubt.
 Tag: suite::iserv
