@@ -5,7 +5,8 @@ if [ "$1" = "remove" ] ||  [ "$1" = "purge" ]
 then
   update-rc.d ferm6 disable || true
   invoke-rc.d ferm6 stop || true
-  [ -f "/etc/ferm.d/20iserv-ipv6.conf" ] && rm -f /etc/ferm.d/20iserv-ipv6.conf
+  [ -d "/etc/ferm6.d" ] && rm -fr /etc/ferm6.d
+  [ -f "/etc/ferm/ferm6.conf" ] && rm -f /etc/ferm/ferm6.conf 
 fi
 
 #DEBHELPER#
