@@ -1,3 +1,11 @@
+stsbl-iserv-server-ferm-ipv6 (17.12.19-1) experimental; urgency=medium
+
+  * package description: Fixed typos
+  * Improved firewall restart on network interface changes
+  * Updated postrm script
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Tue, 19 Dec 2017 08:37:13 +0100
+
 stsbl-iserv-server-ferm-ipv6 (17.12.05-1) experimental; urgency=medium
 
   * Fixed iconf template name
