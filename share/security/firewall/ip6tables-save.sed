@@ -17,7 +17,7 @@ s/\/32//g
 /EOT/d
 s/RELATED,ESTABLISHED/ESTABLISHED,RELATED/g
 s/--syn/--tcp-flags FIN,SYN,RST,ACK SYN/g
-s/REJECT --reject-with icmp-port-unreachable/REJECT/g
+s/REJECT --reject-with icmp6-port-unreachable/REJECT/g
 s/tcp-rst/tcp-reset/g
 s/ - / /g
 /-A f2b-/d
@@ -29,6 +29,7 @@ s/ - / /g
 /--jump CHECKSUM/d
 s/ --ctmask 0xffffffff//
 s/ --nfmask 0xffffffff//
+s/ --match icmp6//g
 
 # SMTPS and IMAP are listed differently in /etc/services 
 s/ imap / 143 /g
