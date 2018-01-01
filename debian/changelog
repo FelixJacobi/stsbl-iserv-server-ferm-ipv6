@@ -1,3 +1,9 @@
+stsbl-iserv-server-ferm-ipv6 (18.01.01-1) experimental; urgency=medium
+
+  * Improved ipv6-icmp and reject normalization
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Mon, 01 Jan 2018 20:21:54 +0100
+
 stsbl-iserv-server-ferm-ipv6 (17.12.19-1) experimental; urgency=medium
 
   * package description: Fixed typos
