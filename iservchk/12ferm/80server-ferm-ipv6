@@ -1,5 +1,6 @@
 MkDir 0755 root:root /etc/ferm6.d
 Check /etc/ferm6.d/20iserv-ipv6.conf
+Check /etc/ferm6.d/99defaults.conf
 Check /etc/ferm/ferm6.conf
 
 Test "ferm6 service"
@@ -7,6 +8,11 @@ Test "ferm6 service"
   ---
   systemctl daemon-reload
   systemctl enable ferm6
+
+Test "reload systemd"
+  ! systemctl status ferm6.service | grep -qE "^Warning: ferm6.service changed on disk."
+  ---
+  systemctl daemon-reload
 
 Test "firewall (ipv6)"
   /usr/lib/iserv/firewallstatus6
