@@ -1,3 +1,9 @@
+stsbl-iserv-server-ferm-ipv6 (18.01.03-1) experimental; urgency=medium
+
+  * Added defaults and reloading of systemd
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Wed, 03 Jan 2018 00:15:47 +0100
+
 stsbl-iserv-server-ferm-ipv6 (18.01.01-2) experimental; urgency=medium
 
   * Updated copyright
