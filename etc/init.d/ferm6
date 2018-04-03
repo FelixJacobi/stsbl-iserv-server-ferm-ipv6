@@ -36,7 +36,7 @@ CACHE=no
 OPTIONS=
 unset DOMAINS
 [ -r /etc/default/ferm ] && . /etc/default/ferm
-OPTIONS+=" --domain ip6"
+OPTIONS="$OPTIONS --domain ip6"
 
 test -f "$CONFIG" || exit 0
 
