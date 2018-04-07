@@ -1,3 +1,13 @@
+stsbl-iserv-server-ferm-ipv6 (18.04.08-1) experimental; urgency=medium
+
+  * Added lintian overrides
+  * Updated packaging
+  * Updated control file
+  * debian/control: Updated Standards-Version
+  * Updated maintenance scripts
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 08 Apr 2018 00:34:57 +0200
+
 stsbl-iserv-server-ferm-ipv6 (18.01.03-1) experimental; urgency=medium
 
   * Added defaults and reloading of systemd
